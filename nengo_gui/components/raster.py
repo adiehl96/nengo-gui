@@ -33,12 +33,12 @@ class Raster(Component):
     def add_nengo_objects(self, page):
         with page.model:
             self.node = nengo.Node(self.gather_data, size_in=self.max_neurons)
-            if 'spikes' in self.neuron_type.probeable:
+            if 'output' in self.neuron_type.probeable:
                 self.conn = nengo.Connection(self.obj, self.node, synapse=None)
 
     def remove_nengo_objects(self, page):
         page.model.nodes.remove(self.node)
-        if 'spikes' in self.neuron_type.probeable:
+        if 'output' in self.neuron_type.probeable:
             page.model.connections.remove(self.conn)
 
     def gather_data(self, t, x):
@@ -51,7 +51,7 @@ class Raster(Component):
     def compute_chosen_neurons(self):
         n_neurons = self.page.config[self].n_neurons
         n_neurons = min(n_neurons, self.max_neurons)
-        self.chosen = np.linspace(0, self.max_neurons-1, 
+        self.chosen = np.linspace(0, self.max_neurons-1,
                                   n_neurons).astype(int)
 
     def update_client(self, client):
